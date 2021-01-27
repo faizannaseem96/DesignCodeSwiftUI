@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct CourseDetailSection: View {
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack(alignment: .topLeading) {
+            ScrollView {
+                CourseItem(course: courses[0])
+                    .frame(height: 300)
+            }
+            CloseButton()
+                .padding()
+                .onTapGesture {
+                    presentationMode.wrappedValue.dismiss()
+                }
+        }
     }
 }
 

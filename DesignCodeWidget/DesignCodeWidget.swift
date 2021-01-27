@@ -42,9 +42,45 @@ struct SimpleEntry: TimelineEntry {
 
 struct DesignCodeWidgetEntryView : View {
     var entry: Provider.Entry
+    @Environment(\.widgetFamily) var family
 
     var body: some View {
-        Text(entry.date, style: .time)
+        if family == .systemSmall {
+            DesignCodeWidgetSmall()
+        } else {
+            DesignCodeWidgetMedium()
+        }
+    }
+}
+
+struct DesignCodeWidgetSmall: View {
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Newest")
+                .font(Font.footnote.smallCaps())
+                .foregroundColor(.secondary)
+            Text("Match Geometry Effect")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+            Text("Learn how to quickly transition between views")
+                .font(.footnote)
+                .foregroundColor(.secondary)
+        }
+        .padding(12)
+    }
+}
+
+struct DesignCodeWidgetMedium: View {
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Newest")
+                .font(Font.footnote.smallCaps())
+                .foregroundColor(.secondary)
+            CourseRow(item: courseSections[0])
+        }
+        .padding(12)
     }
 }
 
@@ -56,14 +92,15 @@ struct DesignCodeWidget: Widget {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             DesignCodeWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
+        .configurationDisplayName("Deisgn Code")
         .description("This is an example widget.")
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 
 struct DesignCodeWidget_Previews: PreviewProvider {
     static var previews: some View {
         DesignCodeWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
